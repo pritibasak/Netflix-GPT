@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import Header from "./Header";
-import { BG_URL } from "../utils/constants";
+import { BG_URL,avatar } from "../utils/constants";
 import { checkValidData } from "../utils/validate";
 import {
   createUserWithEmailAndPassword,
@@ -8,16 +8,12 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { auth } from "../utils/firebase";
-import { useNavigate } from "react-router-dom";
-import Photo from "../assets/Photo.jpg";
-import { avatar } from "../utils/constants";
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
 
 const Login = () => {
   const [isSignInForm, setIsSigninForm] = useState(true);
   const [errorMessage, setErrorMessage] = useState();
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const email = useRef(null); //returns an object
@@ -45,19 +41,19 @@ const Login = () => {
         auth,
         email.current.value,
         password.current.value
-      )  //promise of  createUserWithEmailAndPassword function
+      ) //promise of  createUserWithEmailAndPassword function
         .then((userCredential) => {
           // Signed up
           const user = userCredential.user;
           updateProfile(user, {
             displayName: name.current.value,
-            photoURL: Photo
+            photoURL: avatar,
           })
-           //promise of  updateProfile function (it will work after promise completes its work)
+            //promise of  updateProfile function (it will work after promise completes its work)
             .then(() => {
               //Profile updated!
-              console.log(user)
-              const { uid, email, displayName, photoURL } = auth.currentUser; 
+              //console.log(user);
+              const { uid, email, displayName, photoURL } = auth.currentUser;
               //we can't use user while destructuring here because user doesn't have updated value as per Akhshaay
               //But I used use object it's working
               //updating redux store
@@ -75,7 +71,7 @@ const Login = () => {
               // An error occurred
               setErrorMessage(error.code + "-" + error.message);
             });
-          console.log(user); //if sign up successful automatically user sign in
+         // console.log(user); //if sign up successful automatically user sign in
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -92,7 +88,7 @@ const Login = () => {
         .then((userCredential) => {
           // Signed in
           const user = userCredential.user;
-          console.log("in"+user); //if sign in successful
+          //console.log("in" + user); //if sign in successful
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -161,4 +157,4 @@ export default Login;
 
 //form validation is native to application
 //if validation successful ie email & paasword must follow regEx and return null
-// then only authentication i.e. link with firebase exiting or non exiting users
+//then only authentication i.e. link with firebase existing or non existing users
