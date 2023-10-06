@@ -70,8 +70,6 @@ const Login = () => {
                 })
               );
               //action={payload:{uid:uid,email:email,displayName:displayName}}-->this is being sent to redux store
-              //nvaigate
-              navigate("/browse");
             })
             .catch((error) => {
               // An error occurred
@@ -94,8 +92,8 @@ const Login = () => {
         .then((userCredential) => {
           // Signed in
           const user = userCredential.user;
-          console.log(user); //if sign in successful
-          navigate("/browse");
+          console.log("in"+user); //if sign in successful
+          //navigate("/browse");
         })
         .catch((error) => {
           const errorCode = error.code;
