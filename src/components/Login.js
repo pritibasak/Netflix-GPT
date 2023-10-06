@@ -93,7 +93,6 @@ const Login = () => {
           // Signed in
           const user = userCredential.user;
           console.log("in"+user); //if sign in successful
-          //navigate("/browse");
         })
         .catch((error) => {
           const errorCode = error.code;
