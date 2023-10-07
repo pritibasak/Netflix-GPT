@@ -6,11 +6,15 @@ import { auth } from "../utils/firebase";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addUser, removeUser } from "../utils/userSlice";
+import { toggleGptSearchView } from "../utils/gptSlice";
+import { SUPPORTED_LANGUAGES } from "../utils/constants";
+import { changeLanguage } from "../utils/configSlice";
 
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((store) => store.user);
+  const showGptSearch = useSelector((store) => store.gpt.showGptSearch);
   //console.log("header");
 
   const handleSignOut = () => {
@@ -23,10 +27,10 @@ const Header = () => {
   };
 
   useEffect(() => {
-    //console.log("effect")//why eefect is logged twice consecutively 
+    //console.log("effect")//why eefect is logged twice consecutively
     //The useEffect hook is called twice when the component is mounted and you are in development mode with StrictMode enabled.
     // Note that Strict Mode is only applied in development.
-    // It won't render your components or run your effects twice in production. 
+    // It won't render your components or run your effects twice in production.
 
     //whenever authentication state changes sign in, singn up, sing out this function gets called from firebase
     const unsubsribe = onAuthStateChanged(auth, (user) => {
@@ -47,12 +51,22 @@ const Header = () => {
       } else {
         // User is signed out
         dispatch(removeUser());
-        navigate("/");//React Router Dom useNavigate() causes reload/re-render of the whole application and thereby clearing all state
+        navigate("/"); //React Router Dom useNavigate() causes reload/re-render of the whole application and thereby clearing all state
       }
     });
-    return ()=> unsubsribe(); //when component unloads/unmounts we need to return unsubscribe 
+    return () => unsubsribe(); //when component unloads/unmounts we need to return unsubscribe
     //unsubcribe to the onauthstatechanged callback when component only unmounts
-  },[]);
+  }, []);
+
+  const handleGptSearchClick = () => {
+    //Toggle GPT Search Button
+    dispatch(toggleGptSearchView());
+  };
+
+  const handleLanguageChange=(e)=>{
+  //dispatching and updating redux store by new language
+   dispatch(changeLanguage(e.target.value))
+  }
   return (
     <div className="absolute w-screen px-8 py-2 bg-gradient-to-b from-black z-10 flex justify-between">
       {/** absolute to overlap the netflix logo with the login page
@@ -61,6 +75,22 @@ const Header = () => {
       <img className="w-44" src={logo} alt="logo" />
       {user && (
         <div className="flex p-2">
+          {showGptSearch && <select className="p-2 m-2 bg-slate-900 text-white" onChange={handleLanguageChange}>
+            {SUPPORTED_LANGUAGES.map((supported_language) => (
+              <option
+                key={supported_language.identifier}
+                value={supported_language.identifier}
+              >
+                {supported_language.name}
+              </option>
+            ))}
+          </select>}
+          <button
+            className="px-4 py-2 mx-4 my-2 bg-red-500 text-white rounded-xl hover:bg-opacity-80"
+            onClick={handleGptSearchClick}
+          >
+            {showGptSearch ? "Home" : "GPT Search"}
+          </button>
           <img className="w-12 h-12" src={avatar} alt="avatar-icon" />
           <button onClick={handleSignOut} className="text-white font-bold">
             Sign Out
