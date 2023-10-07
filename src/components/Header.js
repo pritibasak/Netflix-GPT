@@ -11,7 +11,7 @@ const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((store) => store.user);
-  console.log("header");
+  //console.log("header");
 
   const handleSignOut = () => {
     signOut(auth)
@@ -23,7 +23,7 @@ const Header = () => {
   };
 
   useEffect(() => {
-    console.log("effect")//why eefect is logged twice consecutively 
+    //console.log("effect")//why eefect is logged twice consecutively 
     //The useEffect hook is called twice when the component is mounted and you are in development mode with StrictMode enabled.
     // Note that Strict Mode is only applied in development.
     // It won't render your components or run your effects twice in production. 
