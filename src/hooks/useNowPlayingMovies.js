@@ -1,11 +1,13 @@
 import { useEffect } from "react";
 import { API_OPTIONS } from "../utils/constants";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addNowPlayingMovies } from "../utils/movieSlice";
 
 function useNowPlayingMovies() {
   //Fetch data from TMDB API and update redux store
   const dispatch = useDispatch();
+
+  const nowPlayingMovies=useSelector(store=>store.nowPlayingMovies)
 
   const getNowPlayingMovies = async () => {
     const data = await fetch(
@@ -25,7 +27,7 @@ function useNowPlayingMovies() {
   };
 
   useEffect(() => {
-    getNowPlayingMovies();
+    if(!nowPlayingMovies) getNowPlayingMovies();
   }, []); //without [] it would be an infinite api call
 }
 

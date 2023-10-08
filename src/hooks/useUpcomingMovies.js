@@ -1,11 +1,13 @@
 import { useEffect } from "react";
 import { API_OPTIONS } from "../utils/constants";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addUpcomingMovies } from "../utils/movieSlice";
 
 function useUpcomingMovies() {
   //Fetch data from TMDB API and update redux store
   const dispatch = useDispatch();
+
+  const upcomingMovies = useSelector((store) => store.upcomingMovies);
 
   const getUpcomingMovies = async () => {
     const data = await fetch(
@@ -25,7 +27,8 @@ function useUpcomingMovies() {
   };
 
   useEffect(() => {
-    getUpcomingMovies();
+    if (!upcomingMovies) getUpcomingMovies();//memoization concept
+    //!upcomingMovies && getUpcomingMovies(); //we can write like this also
   }, []); //without [] it would be an infinite api call
 }
 

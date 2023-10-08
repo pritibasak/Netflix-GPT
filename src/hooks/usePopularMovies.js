@@ -1,11 +1,13 @@
 import { useEffect } from "react";
 import { API_OPTIONS } from "../utils/constants";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addPopularMovies } from "../utils/movieSlice";
 
 function usePopularMovies() {
   //Fetch data from TMDB API and update redux store
   const dispatch = useDispatch();
+
+  const popularMovies = useSelector((store) => store.popularMovies);
 
   const getPopularMovies = async () => {
     const data = await fetch(
@@ -25,7 +27,7 @@ function usePopularMovies() {
   };
 
   useEffect(() => {
-    getPopularMovies();
+    if (!popularMovies) getPopularMovies();
   }, []); //without [] it would be an infinite api call
 }
 

@@ -9,12 +9,14 @@ export const avatar =
 
 export const arrow =
   "https://o.remove.bg/downloads/c4f2a739-65d4-4201-9660-52431f51df6e/arrow-right-40-removebg-preview.png";
+
+//tmdb fetch  api call 2nds parameter
 export const API_OPTIONS = {
   method: "GET",
   headers: {
     accept: "application/json",
     Authorization:
-      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkZWNkMWExY2Q2NWQzNDBmNGFiNGI4Y2U3OTIwOTAyOSIsInN1YiI6IjY1MWY3NzBmYzUwYWQyMDBlYWMxNTIyMiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.JT2MjcB_Fzf7eHtD_o8lIZAjV2D_fpOMw_k-J0wv6xA",
+      "Bearer "+process.env.REACT_APP_TMDB_KEY,
   },
 };
 
@@ -25,3 +27,5 @@ export const SUPPORTED_LANGUAGES = [
   { identifier: "hindi", name: "Hindi" },
   { identifier: "spanish", name: "Spanish" },
 ];
+
+export const OPENAI_KEY=process.env.REACT_APP_OPENAI_KEY;
