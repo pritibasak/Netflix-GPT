@@ -51,7 +51,9 @@ const Header = () => {
       } else {
         // User is signed out
         dispatch(removeUser());
+        dispatch(toggleGptSearchView());
         navigate("/"); //React Router Dom useNavigate() causes reload/re-render of the whole application and thereby clearing all state
+       
       }
     });
     return () => unsubsribe(); //when component unloads/unmounts we need to return unsubscribe
@@ -68,13 +70,17 @@ const Header = () => {
    dispatch(changeLanguage(e.target.value))
   }
   return (
-    <div className="absolute w-screen px-8 py-2 bg-gradient-to-b from-black z-10 flex justify-between">
+    <div className="absolute w-screen px-8 py-2 bg-gradient-to-b from-black z-10 flex flex-col md:flex-row md:justify-between">
+      {/**default black for mobile ,basically default is sm
+     * sm for tab, if my screen is greater than small, basically it's medium
+     * md for dektop,if my screen size is greater than medium, basically it's large
+     */}
       {/** absolute to overlap the netflix logo with the login page
        * bg-gradient is from top towards botton in black
        */}
-      <img className="w-44" src={logo} alt="logo" />
+      <img className="w-44 mx-auto md:mx-0" src={logo} alt="logo" />
       {user && (
-        <div className="flex p-2">
+        <div className="flex p-2 justify-between">
           {showGptSearch && <select className="p-2 m-2 bg-slate-900 text-white" onChange={handleLanguageChange}>
             {SUPPORTED_LANGUAGES.map((supported_language) => (
               <option
@@ -86,13 +92,13 @@ const Header = () => {
             ))}
           </select>}
           <button
-            className="px-4 py-2 mx-4 my-2 bg-red-500 text-white rounded-xl hover:bg-opacity-80"
+            className="px-4 py-2 mx-0 md:mx-8 my-2 bg-red-500 text-white rounded-xl hover:bg-opacity-80"
             onClick={handleGptSearchClick}
           >
             {showGptSearch ? "Home" : "GPT Search"}
           </button>
-          <img className="w-12 h-12" src={avatar} alt="avatar-icon" />
-          <button onClick={handleSignOut} className="text-white font-bold">
+          <img className="hidden md:block w-12 h-12" src={avatar} alt="avatar-icon" />
+          <button onClick={handleSignOut} className="text-white font-bold mx-2 md:mx-0">
             Sign Out
           </button>
         </div>

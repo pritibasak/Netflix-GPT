@@ -80,9 +80,9 @@ const GptSearchBar = () => {
   const language = useSelector((store) => store.config.lang);
   //console.log(language)
   return (
-    <div className="pt-[10%] flex justify-center">
+    <div className="pt-[35%] md:pt-[10%] flex justify-center">
       <form
-        className="w-1/2 bg-black grid grid-cols-12"
+        className="w-full md:w-1/2 bg-black grid grid-cols-12"
         onSubmit={(e) => e.preventDefault()}
       >
         {/* e=>e.preventDefault() helps to prevent the default acton or behaviour of the form ie submit and refresh the page  once we hit search button
